@@ -1,0 +1,8 @@
+---
+- name: Shut down all hosts
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Shut down host
+      command: shutdown -h now
