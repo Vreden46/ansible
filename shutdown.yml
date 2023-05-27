@@ -1,6 +1,6 @@
 ---
 - name: Shut down all hosts
-  hosts: all
+  hosts: ubuntu
   become: true
 
   tasks:
