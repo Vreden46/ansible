@@ -1,0 +1,54 @@
+---
+- name: Install Apache on Ubuntu
+  hosts: ubuntu, centos
+  become: yes
+  tasks:
+   
+    - name: Install Apache on Ubuntu
+      apt:
+        name: 
+          - apache2
+          - libapache2-mod-php
+        state: latest
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Start Apache service on Ubuntu
+      service:
+        name: apache2
+        state: started
+      when: ansible_distribution == "Ubuntu"
+    
+    - name: Stop UFW service
+      service:
+        name: ufw
+        state: stopped
+      when: ansible_distribution == "Ubuntu"
+       
+    - name: install httpd and php package
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+        update_cache: yes
+      when: ansible_distribution == "Rocky"
+     
+    - name: Start httpd service on Rocky
+      service:
+        name: httpd
+        state: started
+      when: ansible_distribution == "Rocky"
+    
+    - name: Firewall Regel hinzufügen
+      firewalld:
+        port: 80/tcp
+        permanent: true
+        state: enabled
+      when: ansible_distribution == "Rocky"
+      
+    - name: Neustart Firewalld
+      service:
+        name: firewalld
+        state: restarted
+      when: ansible_distribution == "Rocky"

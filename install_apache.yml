@@ -10,7 +10,9 @@
 
     - name: Install Apache
       apt:
-        name: apache2
+        name: 
+          - apache2
+          - libapache2-mod-php
         state: latest
       when: ansible_distribution == "Ubuntu"
 
@@ -20,8 +22,7 @@
         state: started
       when: ansible_distribution == "Ubuntu"
     
-    - name: add php support for apache
-      apt:
-        name: libapache2-mod-php
-        state: latest
-      when: ansible_distribution == "Ubuntu"
+    - name: Stop UFW service
+      service:
+        name: ufw
+        state: stopped
