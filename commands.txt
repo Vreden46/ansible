@@ -6,3 +6,10 @@ ansible-playbook --tags copy --ask-become-pass install_ubuansi.yml
 
 
 ansible-playbook --tags Install --ask-become-pass install_ubuansi.yml
+
+
+
+https://github.com/Vreden46/ansible/archive/refs/heads/main.zip
+
+
+ansible-playbook --ask-become-pass install_zg.yml

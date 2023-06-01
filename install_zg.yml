@@ -1,0 +1,26 @@
+---
+- name: Install Apache on Ubuntu
+  hosts: ubuansi
+  become: yes
+  tasks:
+   
+    - name: Ordner anlegen
+      file:
+        path: ~/giti/
+        state: directory
+        mode: 0755
+    
+    - name: install unzip
+      package:
+        name: unzip
+        state: latest
+        
+    - name: extract giti
+      unarchive:
+       src: https://github.com/Vreden46/ansible/archive/refs/heads/main.zip
+       dest: ~/giti/
+       remote_src: yes
+       mode: 0755
+       owner: root
+       group: root
+       
