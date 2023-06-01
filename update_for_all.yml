@@ -1,0 +1,22 @@
+---
+- name: Install Apache on Ubuntu
+  hosts: all
+  become: yes
+  tasks:
+   
+
+    - name: install updates (Rocky)
+      dnf:
+       update_only: yes
+       update_cache: yes
+      when: ansible_distribution == "Rocky"
+ 
+    - name: install updates (Ubuntu, Debian)
+      apt:
+       upgrade: yes
+       update_cache: yes
+      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint']
+       
+   
+     
+   

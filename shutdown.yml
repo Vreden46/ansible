@@ -1,8 +1,0 @@
----
-- name: Shut down all hosts
-  hosts: ubuntu
-  become: true
-
-  tasks:
-    - name: Shut down host
-      command: shutdown -h now

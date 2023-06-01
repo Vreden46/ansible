@@ -1,0 +1,12 @@
+[ubuntu]
+slave.vreden.home
+storage.vreden.home
+ansible.vreden.home
+ansible2.vreden.home
+proxmint.vreden.home
+
+[debian]
+ansibledebian.vreden.home
+
+[centos]
+rockyansible.vreden.home

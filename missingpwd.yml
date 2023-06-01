@@ -1,8 +1,0 @@
----
-- name: debug module demo
-  hosts: all
-  become: true
-  tasks:
-    - name: root test
-      ansible.builtin.debug:
-        msg: "privilege escalation successful"
