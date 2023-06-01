@@ -1,0 +1,46 @@
+---
+- name: Install Apache on Ubuntu
+  hosts: ubuansi
+  become: yes
+  tasks:
+   
+    - name: Install Apache on Ubuntu
+      tags: Install
+      apt:
+        name: 
+          - apache2
+          - libapache2-mod-php
+        state: latest
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Start Apache service on Ubuntu
+      tags: Install
+      service:
+        name: apache2
+        state: started
+      when: ansible_distribution == "Ubuntu"
+    
+    - name: Stop UFW service
+      tags: Install
+      service:
+        name: ufw
+        state: stopped
+      when: ansible_distribution == "Ubuntu"
+        
+    - name: Ordner anlegen
+      tags: copy
+      file:
+        path: /var/www/test/
+        state: directory
+        mode: 0755
+    
+    - name: copy html file for site
+      tags: copy, Install
+      copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+       

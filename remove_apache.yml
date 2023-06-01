@@ -1,6 +1,6 @@
 ---
 - name: Install Apache on Ubuntu
-  hosts: ubuntu, centos
+  hosts: ubuansi
   become: yes
   tasks:
     

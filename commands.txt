@@ -1,3 +1,8 @@
 ansible-playbook --list-tags update_for_all.yml
 
 ansible-playbook --tags update --ask-become-pass update_for_all.yml
+
+ansible-playbook --tags copy --ask-become-pass install_ubuansi.yml
+
+
+ansible-playbook --tags Install --ask-become-pass install_ubuansi.yml
