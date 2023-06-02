@@ -1,0 +1,24 @@
+- name: Firewall-Konfiguration
+  hosts: ubuansi
+  become: yes
+  tasks:
+    - name: Installiere UFW-Paket
+      apt:
+        name: ufw
+        state: present
+
+    - name: Öffne HTTP-Port (80)
+      ufw:
+        rule: allow
+        port: 80
+        proto: tcp
+    
+    - name: Öffne HTTP-Port (443)
+      ufw:
+        rule: allow
+        port: 443
+        proto: tcp
+        
+    - name: Aktiviere UFW
+      ufw:
+        state: enabled
