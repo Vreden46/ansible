@@ -1,0 +1,10 @@
+---
+- name: Install Apache on Ubuntu
+  hosts: centos
+  roles:
+     - web_rocky
+   
+     
+ 
+#command ohne tags: ansible-playbook --ask-become-pass role_rocky.yml
+#command mit copy tags: ansible-playbook --tags copy --ask-become-pass role_rocky.yml

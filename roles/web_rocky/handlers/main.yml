@@ -1,0 +1,12 @@
+  - name: restart_apache
+    tags: centos,httpd
+    service:
+     name: httpd
+     state: restarted
+  
+  - name: restart_firewalld
+    tags: centos,httpd
+    service:
+     name: firewalld
+     state: restarted
+      

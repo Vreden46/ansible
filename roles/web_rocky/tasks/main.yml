@@ -1,0 +1,40 @@
+    - name: install httpd and php package
+      tags: centos,httpd
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+        update_cache: yes
+     
+    - name: Start httpd service on Rocky
+      tags: centos,httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    
+    - name: Firewall Regel hinzufügen
+      tags: centos,httpd
+      firewalld:
+        port: 80/tcp
+        permanent: true
+        state: enabled
+      notify: restart_firewalld
+      
+    - name: Standardwebseite austauschen
+      tags: centos,httpd
+      copy:
+       src: default_site.html
+       dest: /var/www/html/index.html
+       owner: root
+       group: root
+       mode: 0644
+   
+    - name: change e-mail address for admin
+      tags: centos,httpd
+      lineinfile:
+       path: /etc/httpd/conf/httpd.conf
+       regexp: '^ServerAdmin'
+       line: ServerAdmin somebody@somewhere.net
+      notify: restart_apache

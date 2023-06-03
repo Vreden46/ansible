@@ -1,10 +1,11 @@
 ---
 - name: Install Apache on Ubuntu
-  hosts: ubuansi
+  hosts: ubuansi, centos
   become: yes
   roles:
      - removeApache
  
    
     
- # command mit tags nur für Ubuntu: ansible-playbook --tags ubuntu --ask-become-pass remove_apache.yml   
+# command mit tags nur für Ubuntu: ansible-playbook --tags ubuntu --ask-become-pass remove_apache.yml   
+# command mit tags nur für Rocky: ansible-playbook --tags rocky --ask-become-pass remove_apache.yml

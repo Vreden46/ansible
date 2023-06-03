@@ -50,3 +50,9 @@
          - php
         state: absent
       when: ansible_distribution == "Rocky"
+      
+    - name: delete html file for site
+      tags: ubuntu, rocky
+      file:
+        path: /var/www/html/index.html
+        state: absent

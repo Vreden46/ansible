@@ -7,3 +7,4 @@
      
  
 #command ohne tags: ansible-playbook --ask-become-pass role_ubuansi.yml
+#command mit copy tags: ansible-playbook --tags copy --ask-become-pass role_ubuansi.yml
