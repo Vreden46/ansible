@@ -1,0 +1,52 @@
+    - name: deinstall Apache
+      tags: ubuntu
+      apt:
+        name: 
+          - apache2
+          - libapache2-mod-php
+        state: absent
+      when: ansible_distribution == "Ubuntu"
+    
+    - name: Installiere UFW-Paket
+      tags: ubuntu
+      apt:
+        name: ufw
+        state: present
+      when: ansible_distribution == "Ubuntu"
+      
+    - name: Öffne HTTP-Port (80)
+      tags: ubuntu
+      ufw:
+        rule: deny
+        port: 80
+        proto: tcp
+      when: ansible_distribution == "Ubuntu"
+      
+    - name: Öffne HTTP-Port (443)
+      tags: ubuntu
+      ufw:
+        rule: deny
+        port: 443
+        proto: tcp
+      when: ansible_distribution == "Ubuntu"
+     
+    - name: Reload der Firewall-Regeln
+      tags: ubuntu
+      ufw:
+        state: reloaded
+      when: ansible_distribution == "Ubuntu"
+      
+    - name: Aktiviere UFW
+      tags: ubuntu
+      ufw:
+        state: enabled
+      when: ansible_distribution == "Ubuntu"
+    
+    - name: install httpd package
+      tags: rocky
+      dnf:
+        name: 
+         - httpd
+         - php
+        state: absent
+      when: ansible_distribution == "Rocky"

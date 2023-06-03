@@ -1,0 +1,9 @@
+---
+- name: Install Apache on Ubuntu
+  hosts: ubuansi
+  roles:
+     - web_ubuntu
+   
+     
+ 
+#command ohne tags: ansible-playbook --ask-become-pass role_ubuansi.yml

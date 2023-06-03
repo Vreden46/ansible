@@ -1,0 +1,68 @@
+    - name: Install Apache on Ubuntu
+      tags: Install
+      apt:
+        name: 
+          - apache2
+          - libapache2-mod-php
+        state: latest
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Start Apache service on Ubuntu
+      tags: Install
+      service:
+        name: apache2
+        state: started
+      when: ansible_distribution == "Ubuntu"
+    
+    - name: Installiere UFW-Paket
+      tags: Install
+      apt:
+        name: ufw
+        state: present
+      when: ansible_distribution == "Ubuntu"
+      
+    - name: Öffne HTTP-Port (22)
+      tags: Install
+      ufw:
+        rule: allow
+        port: 22
+        proto: tcp
+      when: ansible_distribution == "Ubuntu"
+      
+    - name: Öffne HTTP-Port (80)
+      tags: Install
+      ufw:
+        rule: allow
+        port: 80
+        proto: tcp
+      when: ansible_distribution == "Ubuntu"
+      
+    - name: Öffne HTTP-Port (443)
+      tags: Install
+      ufw:
+        rule: allow
+        port: 443
+        proto: tcp
+      when: ansible_distribution == "Ubuntu"
+     
+    - name: Reload der Firewall-Regeln
+      tags: Install
+      ufw:
+        state: reloaded
+      when: ansible_distribution == "Ubuntu"
+      
+    - name: Aktiviere UFW
+      tags: Install
+      ufw:
+        state: enabled
+      when: ansible_distribution == "Ubuntu"
+    
+    - name: copy html file for site
+      tags: copy, Install
+      copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644

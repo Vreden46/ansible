@@ -2,24 +2,9 @@
 - name: Install Apache on Ubuntu
   hosts: ubuansi
   become: yes
-  tasks:
-    
-    - name: deinstall Apache
-      apt:
-        name: 
-          - apache2
-          - libapache2-mod-php
-        state: absent
-      when: ansible_distribution == "Ubuntu"
-    
-    - name: install httpd package
-      dnf:
-        name: 
-         - httpd
-         - php
-        state: absent
-      when: ansible_distribution == "Rocky"
+  roles:
+     - removeApache
  
    
     
-    
+ # command mit tags nur für Ubuntu: ansible-playbook --tags ubuntu --ask-become-pass remove_apache.yml   
