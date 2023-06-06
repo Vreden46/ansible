@@ -1,0 +1,27 @@
+---
+- name: Variablen mit groupvars und hostvars
+  hosts: ubuntu, ubuansi 
+  gather_facts: false
+  
+  vars_files:
+    - host_vars/setup.yml
+  
+  vars_prompt:
+    - name: IP
+      prompt: Bitte IP-Adresse eingeben
+      private: false
+      
+   
+  
+  tasks:
+    - assert:
+        that:
+          - IP is match('^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$')
+        fail_msg: Die Variable IP ist keine gültige IP-Adresse!
+  
+    - debug:
+        msg: "1. Groupvars Farbe: {{farbe}}, Zahl: {{zahl}}"
+    - debug:    
+        msg: "2. Hostvars Webserverport: {{web_server_port}}, Webserverroot: {{web_server_root}}"
+    - debug:
+        msg: "3. Meine Eingabe: {{IP}}"

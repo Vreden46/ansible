@@ -1,0 +1,20 @@
+---
+- name: update or distupgrade
+  hosts: localhost
+  gather_facts: false
+  
+  vars:
+    farbe: blaugrün
+    zahl: 69
+ 
+  tasks:
+    - debug:
+        msg: "1. Farbe: {{farbe}}, Zahl: {{zahl}}"
+        
+    - name: Variablen definieren
+      set_fact:
+        farbe: nur blau
+        zahl: 710
+        
+    - debug:
+        msg: "2. Farbe: {{farbe}}, Zahl: {{zahl}}"

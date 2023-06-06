@@ -1,0 +1,2 @@
+web_server_port: 8080
+web_server_root: "/var/www/html"
