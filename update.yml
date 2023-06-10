@@ -1,11 +1,11 @@
 ---
 - name: update or distupgrade
-  hosts: all
+  hosts: newbie_deb
   become: yes
   roles:
      - update
    
      
  
-#command mit tags update: ansible-playbook --tags update --ask-become-pass update.yml
+#command mit tags update: ansible-playbook --tags update --ask-become-pass --become-method su update.yml
  

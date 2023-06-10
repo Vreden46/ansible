@@ -1,7 +1,7 @@
 ---
 - name: New Debian
   hosts: newbie_deb
-  gather_facts: false
+ # gather_facts: false
   
   vars_files:
     - roles/newone/host_vars/setup.yml
