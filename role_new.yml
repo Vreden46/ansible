@@ -10,7 +10,11 @@
     - name: IP
       prompt: Bitte IP-Adresse eingeben
       private: false
-  
+    
+    - name: HN
+      prompt: und hostname eingeben
+      private: false
+      
   roles:
      - newone
    

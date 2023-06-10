@@ -51,6 +51,11 @@
         line: 'dns-nameservers {{ dns_servers | join(" ") }}'
       become: true
     
+    - name: Set a hostname
+      ansible.builtin.hostname:
+        name: '{{ HN }}'
+      become: true
+      
     - name: Resolv.conf-Vorlagendatei kopieren
       template:
         src: roles/newone/templates/resolv.conf.j2
