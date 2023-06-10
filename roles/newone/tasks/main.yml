@@ -8,7 +8,35 @@
         msg: "1. Hostvars Webserverport: {{web_server_port}}, Webserverroot: {{web_server_root}}"
     - debug:
         msg: "2. Meine Eingabe: {{IP}}"
-        
+    
+    - name: Setze statische IP-Adresse
+      lineinfile:
+        dest: /etc/network/interfaces
+        regexp: '^(\s*address\s)'
+        line: 'address {{ IP }}'
+      become: true
+
+    - name: Setze Subnetzmaske
+      lineinfile:
+        dest: /etc/network/interfaces
+        regexp: '^(\s*netmask\s)'
+        line: 'netmask {{ netmask }}'
+      become: true
+
+    - name: Setze Gateway
+      lineinfile:
+        dest: /etc/network/interfaces
+        regexp: '^(\s*gateway\s)'
+        line: 'gateway {{ gateway }}'
+      become: true
+
+    - name: Setze DNS-Server in /etc/network/interfaces
+      lineinfile:
+        dest: /etc/network/interfaces
+        regexp: '^(\s*dns-nameservers\s)'
+        line: 'dns-nameservers {{ dns_servers | join(" ") }}'
+      become: true
+    
     - name: Resolv.conf-Vorlagendatei kopieren
       template:
         src: roles/newone/templates/resolv.conf.j2
