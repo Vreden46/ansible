@@ -1,0 +1,5 @@
+# webserver1.yml
+
+web_server_port: 8080
+web_server_root: "/var/www/html"
+nameserver_ip: 192.168.0.35

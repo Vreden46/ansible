@@ -1,0 +1,19 @@
+---
+- name: New Debian
+  hosts: newbie_deb
+  gather_facts: false
+  
+  vars_files:
+    - roles/newone/host_vars/setup.yml
+  
+  vars_prompt:
+    - name: IP
+      prompt: Bitte IP-Adresse eingeben
+      private: false
+  
+  roles:
+     - newone
+   
+     
+ 
+#command ohne tags: ansible-playbook --ask-become-pass --become-method su role_new.yml

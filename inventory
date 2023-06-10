@@ -16,3 +16,7 @@ rockyansible.vreden.home
 
 [rasbi]
 raspberrypi.vreden.home
+
+
+[newbie_deb]
+192.168.0.181

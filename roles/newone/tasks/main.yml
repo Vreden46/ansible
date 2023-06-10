@@ -1,0 +1,17 @@
+#    - assert:
+#        that:
+#          - IP is match('^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$')
+#        fail_msg: Die Variable IP ist keine gültige IP-Adresse!
+  
+   
+    - debug:    
+        msg: "1. Hostvars Webserverport: {{web_server_port}}, Webserverroot: {{web_server_root}}"
+    - debug:
+        msg: "2. Meine Eingabe: {{IP}}"
+        
+    - name: Resolv.conf-Vorlagendatei kopieren
+      template:
+        src: roles/newone/templates/resolv.conf.j2
+        dest: /etc/resolv.conf
+      notify:
+        - Reboot
