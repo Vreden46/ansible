@@ -2,6 +2,8 @@
 slave.vreden.home
 storage.vreden.home
 proxmint.vreden.home
+
+[dns]
 mywebserver.vreden.home
 
 [ubuansi]
