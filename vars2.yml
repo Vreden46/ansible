@@ -3,19 +3,48 @@
   hosts: dns
   
   
+  vars:
+    meine_variable: "schlecht"
+    reversed_ip: "-"
   
   vars_prompt:
     - name: Host
       prompt: Bitte Hostnamen eingeben
       private: false
-  
+    
+    - name: IP
+      prompt: Bitte IP eingeben
+      private: false
+    
+    
    
   
   tasks:
+    - assert:
+        that:
+          - IP is match('^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$')
+        fail_msg: Das ist keine gültige IP-Adresse!
+  
     - name: Suche und ergänze Zeile in der Konfigurationsdatei
       lineinfile:
-        path: /home/torsten/testzonen/master.testzone
+        path: /home/torsten/testzonen/vreden.home.hosts
         regexp: '^{{Host}}\.vreden\.home'
-        line: '{{Host}}.vreden.home'
+        line: '{{Host}}.vreden.home.       IN       A     {{IP}}'
         state: present
-      become: true
+      register: line_changed
+      changed_when: line_changed.changed
+      
+     
+    - name: Setze Variable auf "gut"
+      set_fact:
+        meine_variable: "gut"
+        reversed_ip: "{{ IP | split('.') | reverse | join('.') }}"
+      when: line_changed.changed
+      
+     
+    - name: Suche und ergänze Zeile in der Konfigurationsdatei
+      lineinfile:
+        path: /home/torsten/testzonen/192.168.0.rev
+        line: "{{ reversed_ip }}.in-addr.arpa.     IN       PTR   {{Host}}.vreden.home."
+        insertafter: EOF
+      when: meine_variable == "gut"
