@@ -27,7 +27,7 @@
   
     - name: Suche und ergänze Zeile in der Konfigurationsdatei
       lineinfile:
-        path: /home/torsten/testzonen/vreden.home.hosts
+        path: /etc/bind/zones/vreden.home.hosts
         regexp: '^{{Host}}\.vreden\.home'
         line: '{{Host}}.vreden.home.       IN       A     {{IP}}'
         state: present
@@ -44,7 +44,13 @@
      
     - name: Suche und ergänze Zeile in der Konfigurationsdatei
       lineinfile:
-        path: /home/torsten/testzonen/192.168.0.rev
+        path: /etc/bind/zones/192.168.0.rev
         line: "{{ reversed_ip }}.in-addr.arpa.     IN       PTR   {{Host}}.vreden.home."
         insertafter: EOF
       when: meine_variable == "gut"
+     
+    - name: Reload BIND configuration
+      become: true
+      command: rndc reload
+
+    
