@@ -1,6 +1,6 @@
 ---
 - name: New Debian
-  hosts: newbie_deb
+  hosts: newbie_deb, dns
  # gather_facts: false
   
   vars_files:

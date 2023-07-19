@@ -14,14 +14,14 @@
       apt:
        upgrade: yes
        update_cache: yes
-      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint']
+      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint'] and inventory_hostname != 'dns'
           
     - name: install updates dist-upgrade
       tags: dist
       apt:
        upgrade: dist
        update_cache: yes
-      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint']
+      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint'] and inventory_hostname != 'dns'
       
     - name: Setze statische IP-Adresse
       lineinfile:
@@ -29,13 +29,15 @@
         regexp: '^(\s*address\s)'
         line: 'address {{ IP }}'
       become: true
-
+      when: inventory_hostname != 'dns'
+      
     - name: Setze Subnetzmaske
       lineinfile:
         dest: /etc/network/interfaces
         regexp: '^(\s*netmask\s)'
         line: 'netmask {{ netmask }}'
       become: true
+      when: inventory_hostname != 'dns'
 
     - name: Setze Gateway
       lineinfile:
@@ -43,6 +45,7 @@
         regexp: '^(\s*gateway\s)'
         line: 'gateway {{ gateway }}'
       become: true
+      when: inventory_hostname != 'dns'
 
     - name: Setze DNS-Server in /etc/network/interfaces
       lineinfile:
@@ -50,11 +53,12 @@
         regexp: '^(\s*dns-nameservers\s)'
         line: 'dns-nameservers {{ dns_servers | join(" ") }}'
       become: true
-    
+      when: inventory_hostname != 'dns'
     - name: Set a hostname
       ansible.builtin.hostname:
         name: '{{ HN }}'
       become: true
+      when: inventory_hostname != 'dns'
       
     - name: Resolv.conf-Vorlagendatei kopieren
       template:
@@ -62,3 +66,5 @@
         dest: /etc/resolv.conf
       notify:
         - Reboot
+      when: inventory_hostname != 'dns' 
+      
