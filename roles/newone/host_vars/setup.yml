@@ -1,5 +1,7 @@
 # webserver1.yml
 
+meine_variable: "frage"
+reversed_ip: 0
 web_server_port: 8080
 web_server_root: "/var/www/html"
 netmask: 255.255.255.0

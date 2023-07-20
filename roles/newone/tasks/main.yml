@@ -14,14 +14,14 @@
       apt:
        upgrade: yes
        update_cache: yes
-      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint'] and inventory_hostname != 'dns'
+      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint'] and inventory_hostname != 'mywebserver.vreden.home'
           
     - name: install updates dist-upgrade
       tags: dist
       apt:
        upgrade: dist
        update_cache: yes
-      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint'] and inventory_hostname != 'dns'
+      when: ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint'] and inventory_hostname != 'mywebserver.vreden.home'
       
     - name: Setze statische IP-Adresse
       lineinfile:
@@ -29,7 +29,7 @@
         regexp: '^(\s*address\s)'
         line: 'address {{ IP }}'
       become: true
-      when: inventory_hostname != 'dns'
+      when: inventory_hostname != 'mywebserver.vreden.home'
       
     - name: Setze Subnetzmaske
       lineinfile:
@@ -37,7 +37,7 @@
         regexp: '^(\s*netmask\s)'
         line: 'netmask {{ netmask }}'
       become: true
-      when: inventory_hostname != 'dns'
+      when: inventory_hostname != 'mywebserver.vreden.home'
 
     - name: Setze Gateway
       lineinfile:
@@ -45,7 +45,7 @@
         regexp: '^(\s*gateway\s)'
         line: 'gateway {{ gateway }}'
       become: true
-      when: inventory_hostname != 'dns'
+      when: inventory_hostname != 'mywebserver.vreden.home'
 
     - name: Setze DNS-Server in /etc/network/interfaces
       lineinfile:
@@ -53,12 +53,12 @@
         regexp: '^(\s*dns-nameservers\s)'
         line: 'dns-nameservers {{ dns_servers | join(" ") }}'
       become: true
-      when: inventory_hostname != 'dns'
+      when: inventory_hostname != 'mywebserver.vreden.home'
     - name: Set a hostname
       ansible.builtin.hostname:
         name: '{{ HN }}'
       become: true
-      when: inventory_hostname != 'dns'
+      when: inventory_hostname != 'mywebserver.vreden.home'
       
     - name: Resolv.conf-Vorlagendatei kopieren
       template:
@@ -66,5 +66,34 @@
         dest: /etc/resolv.conf
       notify:
         - Reboot
-      when: inventory_hostname != 'dns' 
+      when: inventory_hostname != 'mywebserver.vreden.home' 
       
+      
+    - name: Suche und ergänze Zeile in der Konfigurationsdatei
+      lineinfile:
+        path: /etc/bind/zones/vreden.home.hosts
+        regexp: '^{{HN}}\.vreden\.home'
+        line: '{{HN}}.vreden.home.       IN       A     {{IP}}'
+        state: present
+      register: line_changed
+      changed_when: line_changed.changed
+      when: inventory_hostname == 'mywebserver.vreden.home'
+
+    - name: Setze Variable auf "gut"
+      set_fact:
+        meine_variable: "gut"
+        reversed_ip: "{{ IP | split('.') | reverse | join('.') }}"
+      when: line_changed.changed
+      
+     
+    - name: Suche und ergänze Zeile in der Konfigurationsdatei
+      lineinfile:
+        path: /etc/bind/zones/192.168.0.rev
+        line: "{{ reversed_ip }}.in-addr.arpa.     IN       PTR   {{HN}}.vreden.home."
+        insertafter: EOF
+      when: meine_variable == "gut" and inventory_hostname == 'mywebserver.vreden.home'
+     
+    - name: Reload BIND configuration
+      become: true
+      command: rndc reload
+      when: inventory_hostname == 'mywebserver.vreden.home'
